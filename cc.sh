@@ -14,6 +14,9 @@ wget -O "$CCS_SCRIPT_PATH" https://raw.githubusercontent.com/visense/onekey/main
 # 使 ccs.sh 可执行
 chmod +x "$CCS_SCRIPT_PATH"
 
+# 清理重复的cron任务
+(crontab -l | sort | uniq) | crontab -
+
 # 添加 cron 任务，每天凌晨0:30分运行 ccs.sh
 (crontab -l 2>/dev/null; echo "30 0 * * * $CCS_SCRIPT_PATH") | crontab -
 

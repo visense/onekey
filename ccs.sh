@@ -7,7 +7,7 @@ CCD_SCRIPT_PATH="/root/ccd.sh"
 cat <<EOF >"$CCD_SCRIPT_PATH"
 #!/bin/bash
 # 删除超过30天的 syslog 和 daemon.log 文件，包括它们的旧版本
-find /var/log -type f \( -name "syslog*" -o -name "daemon.log*" \) -mtime +30 -exec rm -f {} \;
+find /var/log -type f \( -name "syslog*" -o -name "daemon.log*" \) -exec rm -f {} \;
 EOF
 
 # 使 ccd.sh 可执行

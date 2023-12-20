@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# 创建 script.sh 并写入清理日志的命令
-cat <<EOF >/root/script.sh
-#!/bin/bash
-# 删除超过30天的 syslog 和 daemon.log 文件，包括它们的旧版本
-find /var/log -type f \( -name "syslog*" -o -name "daemon.log*" \) -mtime +30 -exec rm -f {} \;
-EOF
+# 检查 /root 下是否存在 cc.sh，如果存在则删除
+if [ -f "/root/ccs.sh" ]; then
+    rm -f /root/ccs.sh
+fi
 
-# 使 script.sh 可执行
-chmod +x /root/script.sh
+# 从GitHub下载最新的 cc.sh 到 /root 目录
+wget -O /root/ccs.sh https://raw.githubusercontent.com/visense/onekey/main/ccs.sh
 
-# 添加 cron 任务，每周运行一次 script.sh
-(crontab -l 2>/dev/null; echo "0 2 * * 0 /root/script.sh") | crontab -
+# 使 /root/cc.sh 可执行
+chmod +x /root/ccs.sh
 
-echo "script.sh 创建成功并设置了 cron 任务。"
+# 添加 cron 任务，每天凌晨0:30分运行 /root/cc.sh
+(crontab -l 2>/dev/null; echo "30 0 * * * /root/ccs.sh") | crontab -
+
+echo "/root/ccs.sh 已更新并设置了每天凌晨0:30分的 cron 任务。"
